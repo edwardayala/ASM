@@ -1,11 +1,18 @@
 INCLUDE Irvine32.inc
 
 .data
-myArr DWORD 10 DUP(?)
-menuPrompt BYTE "Please make a selection:",0ah,0dh,"1. Manually Enter Values",0ah,0dh,"2: Randomly Generate Values",0ah,0dh,"3. Find Minimum Value",0ah,0dh,"4. Find Maximum Value",0ah,0dh,"5. Find Median Value",0ah,0dh,"6. Print Array",0ah,0dh,"7. Sort Array",0ah,0dh,"8. Quit",0ah,0dh,"Enter an option:",0
-inputPrompt BYTE "Enter an integer:",0
-outputPrompt BYTE "Array values:",0
-errorPrompt BYTE "Invalid selection!",0
+;myArr		DWORD	10 DUP(?)
+myArr		DWORD	5,22,33,44,55,66,77,88,99,100,101
+sortArr		DWORD	10 DUP(?)
+minVal		DWORD	?
+maxVal		DWORD	?
+tmpVal		DWORD	?
+menuPrompt	 BYTE	"Please make a selection:",0ah,0dh,"1. Manually Enter Values",0ah,0dh,"2: Randomly Generate Values",0ah,0dh,"3. Find Minimum Value",0ah,0dh,"4. Find Maximum Value",0ah,0dh,"5. Find Median Value",0ah,0dh,"6. Print Array",0ah,0dh,"7. Sort Array",0ah,0dh,"8. Quit",0ah,0dh,"Enter an option:",0
+inputPrompt	 BYTE	"Enter an integer:",0
+outputPrompt BYTE	"Array values:",0
+errorPrompt	 BYTE	"Invalid selection!",0
+minPrompt	 BYTE	"Minimum:",0
+maxPrompt	 BYTE	"Maximum:",0
 
 .code
 main PROC
@@ -33,30 +40,44 @@ SELECT:
 			jmp		ERROROPT
 
 
-OPTION1:	mov		esi, TYPE myArr
-			mov		ecx, LENGTHOF myArr
+OPTION1:	mov		esi, 0					; Iterator index  - ESI
+			mov		ecx, LENGTHOF myArr		; Length of array - ECX
 			call	OPT1PROC
 			jmp		SELECT
 
-OPTION2:	mov		esi, TYPE myArr
-			mov		ecx, LENGTHOF myArr
+OPTION2:	mov		esi, 0					; Iterator index  - ESI
+			mov		ecx, LENGTHOF myArr		; Length of array - ECX
 			call	OPT2PROC
 			jmp		SELECT
 
-OPTION3:	call	OPT3PROC
+OPTION3:	mov		esi, 0					; Iterator index  - ESI
+			mov		ecx, LENGTHOF myArr		; Length of array - ECX
+			call	OPT3PROC
+			jmp		SELECT
 
-OPTION4:	call	OPT4PROC
+OPTION4:	mov		esi, 0					; Iterator index  - ESI
+			mov		ecx, LENGTHOF myArr		; Length of array - ECX
+			call	OPT4PROC
+			jmp		SELECT
 
-OPTION5:	call	OPT5PROC
+OPTION5:	mov		esi, 0					; Iterator index  - ESI
+			mov		ecx, LENGTHOF myArr		; Length of array - ECX
+			call	OPT5PROC
+			jmp		SELECT
 
-OPTION6:	mov		esi, TYPE myArr
-			mov		ecx, LENGTHOF myArr
+OPTION6:	mov		esi, 0					; Iterator index  - ESI
+			mov		ecx, LENGTHOF myArr		; Length of array - ECX
 			call	OPT6PROC
+			jmp		SELECT
 
-OPTION7:	call	OPT7PROC
+OPTION7:	mov		esi, 0					; Iterator index  - ESI
+			mov		ecx, LENGTHOF myArr		; Length of array - ECX
+			call	OPT7PROC
+			jmp		SELECT
 
 ERROROPT:	mov		edx, OFFSET errorPrompt
 			call	WriteString
+			call	Crlf
 			jmp		SELECT
 
 OPTION8:	exit
@@ -79,19 +100,44 @@ ret
 OPT1PROC ENDP
 
 OPT2PROC PROC
-call	Randomize
+
 L2:
-	mov		[myArr + esi], RandomRange
-	add		esi, TYPE myArr
+	mov		eax, 200			; Ceiling value
+	call	RandomRange			; Generate random value
+	cmp		eax, 100			; Check if random value is over 100
+	jl		FLOOR				; Move to LABEL to add 100 to the random value
+	jg		MOVETOARR			; Continue and enter random value into array
+	MOVETOARR:
+	mov		[myArr + esi], eax	; Add to array
+	add		esi, TYPE myArr		; Incremement iterator
 	loop L2
 ret
-
+FLOOR:
+			add		eax, 100
+			jmp		MOVETOARR
 OPT2PROC ENDP
 
 OPT3PROC PROC
+mov		ebx, [myArr + esi]
+jmp		START
+L3:
+	add		esi, TYPE myArr
+	START:
+	mov		edx, [myArr + esi]
+	cmp		ebx, edx
+	jge		EBXgtEDX
+	loop	L3
+mov		eax, ebx
+mov		edx, OFFSET minPrompt
+call	WriteString
+call	WriteDec
+call	Crlf
 
 ret
 
+EBXgtEDX:
+	xchg	ebx, edx
+	jmp		L3
 OPT3PROC ENDP
 
 OPT4PROC PROC
