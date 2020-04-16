@@ -4,7 +4,7 @@ TITLE assignment                                                             |
 ;                                                                            |
 ;----------------------------------------------------------------------------+
 
-INCLUDE Irvine.inc
+INCLUDE Irvine32.inc
 
 .data
 
