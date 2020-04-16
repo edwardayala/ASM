@@ -15,7 +15,8 @@ INCLUDE Irvine32.inc
 
 .data
 myArr	DWORD	20 DUP(?)
-prompt1	BYTE	"Do you want to run Bubble Sort on another random array?",0Ah,0Dh,"1 = YES | 0 = NO",0Ah,0Dh,0
+;myArr	DWORD	4,2,5,1,3
+prompt1	BYTE	"Do you want to run Bubble Sort on another random array?",0Ah,0Dh,"Enter an option (1 = YES | 0 = NO) : ",0
 hello	BYTE	"Welcome to Bubble Sort in Assembly!",0ah,0dh,"Generating initial random array...",0Ah,0Dh,0
 bye		BYTE	"Goodbye!",0
 print1	BYTE	"Unsorted Array:",0Ah,0Dh,0
@@ -35,7 +36,11 @@ main PROC
 		call	PrintArray
 
 		; BUBBLE SORT ARRAY
-		call	BubbleSort
+		mov		EBX, 20
+		.REPEAT
+			call	BubbleSort
+			dec		EBX
+		.UNTIL EBX == 0
 
 		; PRINT SORTED ARRAY
 		mov		EDX, OFFSET print2
@@ -57,7 +62,7 @@ RandomizeArray PROC
 	mov	ESI, 0
 	mov	ECX, LENGTHOF myArr
 	LR:
-		mov		EAX, 1000	
+		mov		EAX, 1000
 		call	RandomRange
 		mov		[myArr + ESI], EAX
 		add		ESI, TYPE myArr
@@ -80,17 +85,33 @@ PrintArray ENDP
 BubbleSort PROC
 	mov		ESI, 0
 	mov		ECX, LENGTHOF myArr
-	LB:
+	.REPEAT
 		mov		EAX, [myArr + ESI]
-		cmp		EAX, [myArr + ESI + TYPE myArr]
-		jge		SWAPVAL
-		CONT:
+		.IF	EAX >= [myArr + ESI + TYPE myArr]		; If (myArr[i] < myArr[i + 1])
+			xchg	EAX, [myArr + ESI + TYPE myArr]
+			mov		[myArr + ESI], EAX
+		.ENDIF
+		
 		add		ESI, TYPE myArr
-
-		loop	LB
+		dec		ECX
+	.UNTIL ECX == 0
 	ret
-	SWAPVAL:
-		xchg	EAX, [myArr + ESI + TYPE myArr]
-		jmp		CONT
 BubbleSort ENDP
 END main
+; 4,2,5,1,3
+
+;	mov		ESI, 0
+;	mov		ECX, LENGTHOF myArr
+;	LB:
+;		mov		EAX, [myArr + ESI]
+;		cmp		EAX, [myArr + ESI + TYPE myArr]
+;		jge		SwapVal
+;		CONT:
+;		add		ESI, TYPE myArr
+;
+;		loop	LB
+;	ret
+;	SwapVal:
+;		xchg	EAX, [myArr + ESI + TYPE myArr]
+;		mov		[myArr + ESI], EAX
+;		jmp		CONT

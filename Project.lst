@@ -1,18 +1,19 @@
-Microsoft (R) Macro Assembler Version 14.23.28107.0	    04/15/20 19:35:43
-assignment						     Page 1 - 1
+Microsoft (R) Macro Assembler Version 14.23.28107.0	    04/15/20 23:57:23
+<assignment7                                                  Page 1 - 1
 
 
-				TITLE assignment7
-
-				; INSTRUCTIONS:
-				;	In this assignment, you will implement a Bubble Sort using higher level directives. 
-				;	 - You should create a random array of 20 32-bit values; this should be a procedure. - DONE
-				;	 - You should implement a BubbleSort procedure that will be responsible for sorting your values using the Bubble Sort algorithm. 
-				;	 - Your program should prompt the user if they would like to repeat the process of generating a random set of values, output the values, 
-				;	 - call the bubble sort procedure, 
-				;	 - and then output the array again.
-				;	 - use the higher level directives of .WHILE, .IF, .REPEAT, etc. 
-
+				;--------------------------------------------------------------------------------------------------------------------------------------------+
+				TITLE assignment7                                                                                                                            |
+				;                                                                                                                                            |
+				; INSTRUCTIONS:                                                                                                                              |
+				;    In this assignment, you will implement a Bubble Sort using higher level directives.                                                     |
+				;     - You should create a random array of 20 32-bit values; this should be a procedure. - DONE                                             |
+				;     - You should implement a BubbleSort procedure that will be responsible for sorting your values using the Bubble Sort algorithm.        |
+				;     - Your program should prompt the user if they would like to repeat the process of generating a random set of values, output the values,|
+				;     - call the bubble sort procedure,                                                                                                      |
+				;     - and then output the array again.                                                                                                     |
+				;     - use the higher level directives of .WHILE, .IF, .REPEAT, etc.                                                                        |
+				;--------------------------------------------------------------------------------------------------------------------------------------------+
 
 				INCLUDE Irvine32.inc
 			      C ; Include file for Irvine32.lib             (Irvine32.inc)
@@ -37,7 +38,8 @@ Microsoft (R) Macro Assembler Version 14.23.28107.0	    04/15/20 19:35:43
  00000000  00000014 [		myArr	DWORD	20 DUP(?)
 	    00000000
 	   ]
- 00000050 44 6F 20 79 6F	prompt1	BYTE	"Do you want to run Bubble Sort on another random array? 1 = YES | 0 = NO",0Ah,0Dh,0
+				;myArr	DWORD	4,2,5,1,3
+ 00000050 44 6F 20 79 6F	prompt1	BYTE	"Do you want to run Bubble Sort on another random array?",0Ah,0Dh,"Enter an option (1 = YES | 0 = NO) : ",0
 	   75 20 77 61 6E
 	   74 20 74 6F 20
 	   72 75 6E 20 42
@@ -48,116 +50,149 @@ Microsoft (R) Macro Assembler Version 14.23.28107.0	    04/15/20 19:35:43
 	   72 20 72 61 6E
 	   64 6F 6D 20 61
 	   72 72 61 79 3F
-	   20 31 20 3D 20
-	   59 45 53 20 7C
-	   20 30 20 3D 20
-	   4E 4F 0A 0D 00
- 0000009B 57 65 6C 63 6F	hello	BYTE	"Welcome to Bubble Sort in Assembly",0ah,0dh,"Generating initial random array...",0Ah,0Dh,0
+	   0A 0D 45 6E 74
+	   65 72 20 61 6E
+	   20 6F 70 74 69
+	   6F 6E 20 28 31
+	   20 3D 20 59 45
+	   53 20 7C 20 30
+	   20 3D 20 4E 4F
+	   29 20 3A 20 00
+ 000000AF 57 65 6C 63 6F	hello	BYTE	"Welcome to Bubble Sort in Assembly!",0ah,0dh,"Generating initial random array...",0Ah,0Dh,0
 	   6D 65 20 74 6F
 	   20 42 75 62 62
 	   6C 65 20 53 6F
 	   72 74 20 69 6E
 	   20 41 73 73 65
-	   6D 62 6C 79 0A
-	   0D 47 65 6E 65
-	   72 61 74 69 6E
-	   67 20 69 6E 69
-	   74 69 61 6C 20
-	   72 61 6E 64 6F
-	   6D 20 61 72 72
-	   61 79 2E 2E 2E
-	   0A 0D 00
- 000000E4 47 6F 6F 64 62	bye		BYTE	"Goodbye!",0
+	   6D 62 6C 79 21
+	   0A 0D 47 65 6E
+	   65 72 61 74 69
+	   6E 67 20 69 6E
+	   69 74 69 61 6C
+	   20 72 61 6E 64
+	   6F 6D 20 61 72
+	   72 61 79 2E 2E
+	   2E 0A 0D 00
+ 000000F9 47 6F 6F 64 62	bye		BYTE	"Goodbye!",0
 	   79 65 21 00
- 000000ED 55 6E 73 6F 72	print1	BYTE	"Unsorted Array:",0Ah,0Dh,0
+ 00000102 55 6E 73 6F 72	print1	BYTE	"Unsorted Array:",0Ah,0Dh,0
 	   74 65 64 20 41
 	   72 72 61 79 3A
 	   0A 0D 00
- 000000FF 53 6F 72 74 65	print2	BYTE	"Sorted Array:",0Ah,0Dh,0
+ 00000114 53 6F 72 74 65	print2	BYTE	"Sorted Array:",0Ah,0Dh,0
 	   64 20 41 72 72
 	   61 79 3A 0A 0D
 	   00
 
  00000000			.code
  00000000			main PROC
- 00000000  BA 0000009B R		mov		EDX, OFFSET hello
+ 00000000  BA 000000AF R		mov		EDX, OFFSET hello
  00000005  E8 00000000 E		call	WriteString
 					.REPEAT
  0000000A		   *@C0001:
 						; RANDOMIZE ARRAY
- 0000000A  E8 00000047				call	RandomizeArray
+ 0000000A  E8 00000051				call	RandomizeArray
 
 						; PRINT UNSORTED ARRAY
- 0000000F  BA 000000ED R			mov		EDX, OFFSET print1
+ 0000000F  BA 00000102 R			mov		EDX, OFFSET print1
  00000014  E8 00000000 E			call	WriteString
- 00000019  E8 00000058				call	PrintArray
+ 00000019  E8 00000062				call	PrintArray
 
 						; BUBBLE SORT ARRAY
- 0000001E  E8 00000073				call	BubbleSort
+ 0000001E  BB 00000014				mov		EBX, 20
+						.REPEAT
+ 00000023		   *@C0002:
+ 00000023  E8 00000078					call	BubbleSort
+ 00000028  4B						dec		EBX
+						.UNTIL EBX == 0
+ 00000029  0B DB	   *	    or	ebx, ebx
+ 0000002B  75 F6	   *	    jne    @C0002
 
 						; PRINT SORTED ARRAY
- 00000023  BA 000000FF R			mov		EDX, OFFSET print2
- 00000028  E8 00000000 E			call	WriteString
- 0000002D  E8 00000044				call	PrintArray
+ 0000002D  BA 00000114 R			mov		EDX, OFFSET print2
+ 00000032  E8 00000000 E			call	WriteString
+ 00000037  E8 00000044				call	PrintArray
 
 						; PROMPT TO RUN AGAIN
- 00000032  BA 00000050 R			mov		EDX, OFFSET prompt1
- 00000037  E8 00000000 E			call	WriteString
- 0000003C  E8 00000000 E			call	ReadInt
+ 0000003C  BA 00000050 R			mov		EDX, OFFSET prompt1
+ 00000041  E8 00000000 E			call	WriteString
+ 00000046  E8 00000000 E			call	ReadInt
 					.UNTIL EAX == 0
- 00000041  0B C0	   *	    or	eax, eax
- 00000043  75 C5	   *	    jne    @C0001
- 00000045  BA 000000E4 R		mov		EDX, OFFSET bye
- 0000004A  E8 00000000 E		call	WriteString
+ 0000004B  0B C0	   *	    or	eax, eax
+ 0000004D  75 BB	   *	    jne    @C0001
+ 0000004F  BA 000000F9 R		mov		EDX, OFFSET bye
+ 00000054  E8 00000000 E		call	WriteString
 					exit
- 0000004F  6A 00	   *	    push   +000000000h
- 00000051  E8 00000000 E   *	    call   ExitProcess
+ 00000059  6A 00	   *	    push   +000000000h
+ 0000005B  E8 00000000 E   *	    call   ExitProcess
 
- 00000056			main ENDP
+ 00000060			main ENDP
 
- 00000056			RandomizeArray PROC
- 00000056  BE 00000000			mov	ESI, 0
- 0000005B  B9 00000014			mov	ECX, LENGTHOF myArr
- 00000060				LR:
- 00000060  B8 000003E8				mov		EAX, 1000	
- 00000065  E8 00000000 E			call	RandomRange
- 0000006A  89 86 00000000 R			mov		[myArr + ESI], EAX
- 00000070  83 C6 04				add		ESI, TYPE myArr
- 00000073  E2 EB				loop	LR
- 00000075  C3				ret
- 00000076			RandomizeArray ENDP
+ 00000060			RandomizeArray PROC
+ 00000060  BE 00000000			mov	ESI, 0
+ 00000065  B9 00000014			mov	ECX, LENGTHOF myArr
+ 0000006A				LR:
+ 0000006A  B8 000003E8				mov		EAX, 1000
+ 0000006F  E8 00000000 E			call	RandomRange
+ 00000074  89 86 00000000 R			mov		[myArr + ESI], EAX
+ 0000007A  83 C6 04				add		ESI, TYPE myArr
+ 0000007D  E2 EB				loop	LR
+ 0000007F  C3				ret
+ 00000080			RandomizeArray ENDP
 
- 00000076			PrintArray PROC
- 00000076  BE 00000000			mov	ESI, 0
- 0000007B  B9 00000014			mov	ECX, LENGTHOF myArr
- 00000080				LP:
- 00000080  8B 86 00000000 R			mov 	EAX, [myArr + ESI]
- 00000086  E8 00000000 E			call	WriteDec
- 0000008B  E8 00000000 E			call	Crlf
- 00000090  83 C6 04				add		ESI, TYPE myArr
- 00000093  E2 EB				loop	LP
- 00000095  C3				ret
- 00000096			PrintArray ENDP
+ 00000080			PrintArray PROC
+ 00000080  BE 00000000			mov	ESI, 0
+ 00000085  B9 00000014			mov	ECX, LENGTHOF myArr
+ 0000008A				LP:
+ 0000008A  8B 86 00000000 R			mov 	EAX, [myArr + ESI]
+ 00000090  E8 00000000 E			call	WriteDec
+ 00000095  E8 00000000 E			call	Crlf
+ 0000009A  83 C6 04				add		ESI, TYPE myArr
+ 0000009D  E2 EB				loop	LP
+ 0000009F  C3				ret
+ 000000A0			PrintArray ENDP
 
- 00000096			BubbleSort PROC
- 00000096  BE 00000000			mov		ESI, 0
- 0000009B  B9 00000014			mov		ECX, LENGTHOF myArr
- 000000A0				LB:
- 000000A0  8B 86 00000000 R			mov		EAX, [myArr + ESI]
- 000000A6  3B 86 00000004 R			cmp		EAX, [myArr + ESI + TYPE myArr]
- 000000AC  7D 06				jge		SWAPVAL
- 000000AE					CONT:
- 000000AE  83 C6 04				add		ESI, TYPE myArr
-
- 000000B1  E2 ED				loop	LB
- 000000B3  C3				ret
- 000000B4				SWAPVAL:
- 000000B4  87 86 00000004 R			xchg	EAX, [myArr + ESI + TYPE myArr]
- 000000BA  EB F2				jmp		CONT
- 000000BC			BubbleSort ENDP
+ 000000A0			BubbleSort PROC
+ 000000A0  BE 00000000			mov		ESI, 0
+ 000000A5  B9 00000014			mov		ECX, LENGTHOF myArr
+					.REPEAT
+ 000000AA		   *@C0005:
+ 000000AA  8B 86 00000000 R			mov		EAX, [myArr + ESI]
+						.IF	EAX >= [myArr + ESI + TYPE myArr]		; If (myArr[i] < myArr[i + 1])
+ 000000B0  3B 86 00000004 R *	    cmp    eax, [myArr + esi + type myArr]
+ 000000B6  72 0C	   *	    jb	@C0006
+ 000000B8  87 86 00000004 R				xchg	EAX, [myArr + ESI + TYPE myArr]
+ 000000BE  89 86 00000000 R				mov		[myArr + ESI], EAX
+						.ENDIF
+						
+ 000000C4		   *@C0006:
+ 000000C4  83 C6 04				add		ESI, TYPE myArr
+ 000000C7  49					dec		ECX
+					.UNTIL ECX == 0
+ 000000C8  0B C9	   *	    or	ecx, ecx
+ 000000CA  75 DE	   *	    jne    @C0005
+ 000000CC  C3				ret
+ 000000CD			BubbleSort ENDP
 				END main
-Microsoft (R) Macro Assembler Version 14.23.28107.0	    04/15/20 19:35:43
-assignment						     Symbols 2 - 1
+				; 4,2,5,1,3
+
+				;	mov		ESI, 0
+				;	mov		ECX, LENGTHOF myArr
+				;	LB:
+				;		mov		EAX, [myArr + ESI]
+				;		cmp		EAX, [myArr + ESI + TYPE myArr]
+				;		jge		SwapVal
+				;		CONT:
+				;		add		ESI, TYPE myArr
+				;
+				;		loop	LB
+				;	ret
+				;	SwapVal:
+				;		xchg	EAX, [myArr + ESI + TYPE myArr]
+				;		mov		[myArr + ESI], EAX
+				;		jmp		CONT
+Microsoft (R) Macro Assembler Version 14.23.28107.0	    04/15/20 23:57:23
+<assignment7                                                  Symbols 2 - 1
 
 
 
@@ -250,18 +285,15 @@ Segments and Groups:
 
 FLAT . . . . . . . . . . . . . .	GROUP
 STACK  . . . . . . . . . . . . .	32 Bit	 00001000 Para	  Stack	  'STACK'	 
-_DATA  . . . . . . . . . . . . .	32 Bit	 0000010F Para	  Public  'DATA'	
-_TEXT  . . . . . . . . . . . . .	32 Bit	 000000BC Para	  Public  'CODE'	
+_DATA  . . . . . . . . . . . . .	32 Bit	 00000124 Para	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 000000CD Para	  Public  'CODE'	
 
 
 Procedures, parameters, and locals:
 
                 N a m e                 Type     Value    Attr
 
-BubbleSort . . . . . . . . . . .	P Near	 00000096 _TEXT	Length= 00000026 Public STDCALL
-  LB . . . . . . . . . . . . . .	L Near	 000000A0 _TEXT	
-  CONT . . . . . . . . . . . . .	L Near	 000000AE _TEXT	
-  SWAPVAL  . . . . . . . . . . .	L Near	 000000B4 _TEXT	
+BubbleSort . . . . . . . . . . .	P Near	 000000A0 _TEXT	Length= 0000002D Public STDCALL
 CloseFile  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 CloseHandle  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 Clrscr . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
@@ -310,12 +342,12 @@ OpenInputFile  . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External
 ParseDecimal32 . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 ParseInteger32 . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 PeekConsoleInputA  . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
-PrintArray . . . . . . . . . . .	P Near	 00000076 _TEXT	Length= 00000020 Public STDCALL
-  LP . . . . . . . . . . . . . .	L Near	 00000080 _TEXT	
+PrintArray . . . . . . . . . . .	P Near	 00000080 _TEXT	Length= 00000020 Public STDCALL
+  LP . . . . . . . . . . . . . .	L Near	 0000008A _TEXT	
 Random32 . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 RandomRange  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
-RandomizeArray . . . . . . . . .	P Near	 00000056 _TEXT	Length= 00000020 Public STDCALL
-  LR . . . . . . . . . . . . . .	L Near	 00000060 _TEXT	
+RandomizeArray . . . . . . . . .	P Near	 00000060 _TEXT	Length= 00000020 Public STDCALL
+  LR . . . . . . . . . . . . . .	L Near	 0000006A _TEXT	
 Randomize  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 ReadChar . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 ReadConsoleA . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
@@ -366,7 +398,7 @@ WriteStackFrame  . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External
 WriteString  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteToFile  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteWindowsMsg  . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
-main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 00000056 Public STDCALL
+main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 00000060 Public STDCALL
 printf . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
 scanf  . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
 wsprintfA  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
@@ -588,12 +620,12 @@ WriteConsole . . . . . . . . . .	Text   	 WriteConsoleA
 black  . . . . . . . . . . . . .	Number	 00000000h   
 blue . . . . . . . . . . . . . .	Number	 00000001h   
 brown  . . . . . . . . . . . . .	Number	 00000006h   
-bye  . . . . . . . . . . . . . .	Byte	 000000E4 _DATA	
+bye  . . . . . . . . . . . . . .	Byte	 000000F9 _DATA	
 cyan . . . . . . . . . . . . . .	Number	 00000003h   
 exit . . . . . . . . . . . . . .	Text   	 INVOKE ExitProcess,0
 gray . . . . . . . . . . . . . .	Number	 00000008h   
 green  . . . . . . . . . . . . .	Number	 00000002h   
-hello  . . . . . . . . . . . . .	Byte	 0000009B _DATA	
+hello  . . . . . . . . . . . . .	Byte	 000000AF _DATA	
 lightBlue  . . . . . . . . . . .	Number	 00000009h   
 lightCyan  . . . . . . . . . . .	Number	 0000000Bh   
 lightGray  . . . . . . . . . . .	Number	 00000007h   
@@ -602,8 +634,8 @@ lightMagenta . . . . . . . . . .	Number	 0000000Dh
 lightRed . . . . . . . . . . . .	Number	 0000000Ch   
 magenta  . . . . . . . . . . . .	Number	 00000005h   
 myArr  . . . . . . . . . . . . .	DWord	 00000000 _DATA	
-print1 . . . . . . . . . . . . .	Byte	 000000ED _DATA	
-print2 . . . . . . . . . . . . .	Byte	 000000FF _DATA	
+print1 . . . . . . . . . . . . .	Byte	 00000102 _DATA	
+print2 . . . . . . . . . . . . .	Byte	 00000114 _DATA	
 prompt1  . . . . . . . . . . . .	Byte	 00000050 _DATA	
 red  . . . . . . . . . . . . . .	Number	 00000004h   
 white  . . . . . . . . . . . . .	Number	 0000000Fh   
