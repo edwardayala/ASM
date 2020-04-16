@@ -10,109 +10,108 @@ TITLE assignment7                                                               
 ;     - and then output the array again.                                                                                                     |
 ;     - use the higher level directives of .WHILE, .IF, .REPEAT, etc.                                                                        |
 ;--------------------------------------------------------------------------------------------------------------------------------------------+
-    
-    
+
 INCLUDE Irvine32.inc
 
 .data
-myArr    DWORD    20 DUP(?)
-;myArr    DWORD    4,2,5,1,3
-prompt1    BYTE    "Do you want to run Bubble Sort on another random array?",0Ah,0Dh,"Enter an option (1 = YES | 0 = NO) : ",0
-hello    BYTE    "Welcome to Bubble Sort in Assembly!",0ah,0dh,"Generating initial random array...",0Ah,0Dh,0
-bye        BYTE    "Goodbye!",0
-print1    BYTE    "Unsorted Array:",0Ah,0Dh,0
-print2    BYTE    "Sorted Array:",0Ah,0Dh,0
+myArr	DWORD	20 DUP(?)
+;myArr	DWORD	4,2,5,1,3
+prompt1	BYTE	"Do you want to run Bubble Sort on another random array?",0Ah,0Dh,"Enter an option (1 = YES | 0 = NO) : ",0
+hello	BYTE	"Welcome to Bubble Sort in Assembly!",0ah,0dh,"Generating initial random array...",0Ah,0Dh,0
+bye		BYTE	"Goodbye!",0
+print1	BYTE	"Unsorted Array:",0Ah,0Dh,0
+print2	BYTE	"Sorted Array:",0Ah,0Dh,0
 
 .code
 main PROC
-    mov        EDX, OFFSET hello
-    call    WriteString
-    .REPEAT
-        ; RANDOMIZE ARRAY
-        call    RandomizeArray
+	mov		EDX, OFFSET hello
+	call	WriteString
+	.REPEAT
+		; RANDOMIZE ARRAY
+		call	RandomizeArray
 
-        ; PRINT UNSORTED ARRAY
-        mov        EDX, OFFSET print1
-        call    WriteString
-        call    PrintArray
+		; PRINT UNSORTED ARRAY
+		mov		EDX, OFFSET print1
+		call	WriteString
+		call	PrintArray
 
-        ; BUBBLE SORT ARRAY
-        mov        EBX, 20
-        .REPEAT
-            call    BubbleSort
-            dec        EBX
-        .UNTIL EBX == 0
+		; BUBBLE SORT ARRAY
+		mov		EBX, 20
+		.REPEAT
+			call	BubbleSort
+			dec		EBX
+		.UNTIL EBX == 0
 
-        ; PRINT SORTED ARRAY
-        mov        EDX, OFFSET print2
-        call    WriteString
-        call    PrintArray
+		; PRINT SORTED ARRAY
+		mov		EDX, OFFSET print2
+		call	WriteString
+		call	PrintArray
 
-        ; PROMPT TO RUN AGAIN
-        mov        EDX, OFFSET prompt1
-        call    WriteString
-        call    ReadInt
-    .UNTIL EAX == 0
-    mov        EDX, OFFSET bye
-    call    WriteString
-    exit
+		; PROMPT TO RUN AGAIN
+		mov		EDX, OFFSET prompt1
+		call	WriteString
+		call	ReadInt
+	.UNTIL EAX == 0
+	mov		EDX, OFFSET bye
+	call	WriteString
+	exit
 
 main ENDP
 
 RandomizeArray PROC
-    mov    ESI, 0
-    mov    ECX, LENGTHOF myArr
-    LR:
-        mov        EAX, 1000
-        call    RandomRange
-        mov        [myArr + ESI], EAX
-        add        ESI, TYPE myArr
-        loop    LR
-    ret
+	mov	ESI, 0
+	mov	ECX, LENGTHOF myArr
+	LR:
+		mov		EAX, 1000
+		call	RandomRange
+		mov		[myArr + ESI], EAX
+		add		ESI, TYPE myArr
+		loop	LR
+	ret
 RandomizeArray ENDP
 
 PrintArray PROC
-    mov    ESI, 0
-    mov    ECX, LENGTHOF myArr
-    LP:
-        mov     EAX, [myArr + ESI]
-        call    WriteDec
-        call    Crlf
-        add        ESI, TYPE myArr
-        loop    LP
-    ret
+	mov	ESI, 0
+	mov	ECX, LENGTHOF myArr
+	LP:
+		mov 	EAX, [myArr + ESI]
+		call	WriteDec
+		call	Crlf
+		add		ESI, TYPE myArr
+		loop	LP
+	ret
 PrintArray ENDP
 
 BubbleSort PROC
-    mov        ESI, 0
-    mov        ECX, LENGTHOF myArr
-    .REPEAT
-        mov        EAX, [myArr + ESI]
-        .IF    EAX >= [myArr + ESI + TYPE myArr]        ; If (myArr[i] < myArr[i + 1])
-            xchg    EAX, [myArr + ESI + TYPE myArr]
-            mov        [myArr + ESI], EAX
-        .ENDIF
-        
-        add        ESI, TYPE myArr
-        dec        ECX
-    .UNTIL ECX == 0
-    ret
+	mov		ESI, 0
+	mov		ECX, LENGTHOF myArr
+	.REPEAT
+		mov		EAX, [myArr + ESI]
+		.IF	EAX >= [myArr + ESI + TYPE myArr]		; If (myArr[i] < myArr[i + 1])
+			xchg	EAX, [myArr + ESI + TYPE myArr]
+			mov		[myArr + ESI], EAX
+		.ENDIF
+		
+		add		ESI, TYPE myArr
+		dec		ECX
+	.UNTIL ECX == 0
+	ret
 BubbleSort ENDP
 END main
 ; 4,2,5,1,3
 
-;    mov        ESI, 0
-;    mov        ECX, LENGTHOF myArr
-;    LB:
-;        mov        EAX, [myArr + ESI]
-;        cmp        EAX, [myArr + ESI + TYPE myArr]
-;        jge        SwapVal
-;        CONT:
-;        add        ESI, TYPE myArr
+;	mov		ESI, 0
+;	mov		ECX, LENGTHOF myArr
+;	LB:
+;		mov		EAX, [myArr + ESI]
+;		cmp		EAX, [myArr + ESI + TYPE myArr]
+;		jge		SwapVal
+;		CONT:
+;		add		ESI, TYPE myArr
 ;
-;        loop    LB
-;    ret
-;    SwapVal:
-;        xchg    EAX, [myArr + ESI + TYPE myArr]
-;        mov        [myArr + ESI], EAX
-;        jmp        CONT
+;		loop	LB
+;	ret
+;	SwapVal:
+;		xchg	EAX, [myArr + ESI + TYPE myArr]
+;		mov		[myArr + ESI], EAX
+;		jmp		CONT
