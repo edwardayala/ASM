@@ -1,14 +1,15 @@
-TITLE assignment7
-
-; INSTRUCTIONS:
-;	In this assignment, you will implement a Bubble Sort using higher level directives. 
-;	 - You should create a random array of 20 32-bit values; this should be a procedure. - DONE
-;	 - You should implement a BubbleSort procedure that will be responsible for sorting your values using the Bubble Sort algorithm. 
-;	 - Your program should prompt the user if they would like to repeat the process of generating a random set of values, output the values, 
-;	 - call the bubble sort procedure, 
-;	 - and then output the array again.
-;	 - use the higher level directives of .WHILE, .IF, .REPEAT, etc. 
-
+;--------------------------------------------------------------------------------------------------------------------------------------------+
+TITLE assignment7																															 |
+;																																			 |
+; INSTRUCTIONS:																																 |
+;	In this assignment, you will implement a Bubble Sort using higher level directives.														 |
+;	 - You should create a random array of 20 32-bit values; this should be a procedure. - DONE												 |
+;	 - You should implement a BubbleSort procedure that will be responsible for sorting your values using the Bubble Sort algorithm.		 |
+;	 - Your program should prompt the user if they would like to repeat the process of generating a random set of values, output the values, |
+;	 - call the bubble sort procedure,																										 |
+;	 - and then output the array again.																										 |
+;	 - use the higher level directives of .WHILE, .IF, .REPEAT, etc.																		 |
+;--------------------------------------------------------------------------------------------------------------------------------------------+
 
 INCLUDE Irvine32.inc
 
