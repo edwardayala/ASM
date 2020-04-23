@@ -10,17 +10,28 @@ TITLE assignment 8                                                           |
 INCLUDE Irvine32.inc
 
 .data
-opInput	BYTE	?
+opInput	DWORD	?
 fstNum	DWORD	?
 sndNum	DWORD	?
+hello	BYTE	"Welcome to assembly calculator!",0dh,0ah,0
 prompt0	BYTE	"Enter a mathematical operation: +, -, /, *, n!, 2^n",0dh,0ah,0
 prompt1 BYTE	"Enter the first number:",0dh,0ah,0
 prompt2	BYTE	"Enter the second number:"
 
 .code
 main PROC
-	
-	call DumpRegs
+	mov		EDX, OFFSET hello
+	call	WriteString
+
+	mov		EDX, OFFSET prompt0
+	call	WriteString
+	mov		EDX, OFFSET opInput
+	mov		ECX, LENGTHOF opInput
+	call	ReadString
+	mov		opInput, EDX
+
+	mov		EDX, OFFSET opInput
+	call	WriteString
 	exit
 main ENDP
 END main
