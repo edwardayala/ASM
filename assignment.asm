@@ -13,7 +13,6 @@ INCLUDE Irvine32.inc
 opInput	DWORD	?
 fstNum	DWORD	?
 sndNum	DWORD	?
-result	DWORD	?
 hello	BYTE	"Welcome to assembly calculator!",0dh,0ah,"Here are the types of operations available:",0dh,0ah,0
 bye		BYTE	0dh,0ah,"Goodbye!",0dh,0ah,0
 prompt0	BYTE	"1: +",0dh,0ah,"2: -",0dh,0ah,"3: /",0dh,0ah,"4: *",0dh,0ah,"5: n!",0dh,0ah,"6: 2^n",0dh,0ah,"Enter a mathematical operation: ",0
