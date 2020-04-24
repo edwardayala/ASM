@@ -37,7 +37,7 @@ main PROC
 	; MENU OPTIONS
 	mov     EAX, opInput
 	
-	cmp		EAX, 1
+	cmp     EAX, 1
 	je      ADDITION
 
 	cmp     EAX, 2
@@ -204,11 +204,11 @@ main PROC
 		mov     fstNum, EAX
 		
 		; POWER
-		mov		ECX, EAX
+		mov     ECX, EAX
 		mov     EAX, 2
 		mov     EBX, 2
 		.REPEAT
-			mul		EBX
+			mul     EBX
 			dec     ECX
 		.UNTIL ECX == 1
 
