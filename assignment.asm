@@ -98,20 +98,3 @@ BubbleSort PROC
 	ret
 BubbleSort ENDP
 END main
-; 4,2,5,1,3
-
-;	mov		ESI, 0
-;	mov		ECX, LENGTHOF myArr
-;	LB:
-;		mov		EAX, [myArr + ESI]
-;		cmp		EAX, [myArr + ESI + TYPE myArr]
-;		jge		SwapVal
-;		CONT:
-;		add		ESI, TYPE myArr
-;
-;		loop	LB
-;	ret
-;	SwapVal:
-;		xchg	EAX, [myArr + ESI + TYPE myArr]
-;		mov		[myArr + ESI], EAX
-;		jmp		CONT
