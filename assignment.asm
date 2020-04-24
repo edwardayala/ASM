@@ -15,7 +15,6 @@ INCLUDE Irvine32.inc
 
 .data
 myArr	DWORD	20 DUP(?)
-;myArr	DWORD	4,2,5,1,3
 prompt1	BYTE	"Do you want to run Bubble Sort on another random array?",0Ah,0Dh,"Enter an option (1 = YES | 0 = NO) : ",0
 hello	BYTE	"Welcome to Bubble Sort in Assembly!",0ah,0dh,"Generating initial random array...",0Ah,0Dh,0
 bye		BYTE	"Goodbye!",0

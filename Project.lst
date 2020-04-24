@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler Version 14.23.28107.0	    04/24/20 00:10:26
+Microsoft (R) Macro Assembler Version 14.23.28107.0	    04/24/20 02:06:44
 <assignment7                                                  Page 1 - 1
 
 
@@ -38,7 +38,6 @@ Microsoft (R) Macro Assembler Version 14.23.28107.0	    04/24/20 00:10:26
  00000000  00000014 [		myArr	DWORD	20 DUP(?)
 	    00000000
 	   ]
-				;myArr	DWORD	4,2,5,1,3
  00000050 44 6F 20 79 6F	prompt1	BYTE	"Do you want to run Bubble Sort on another random array?",0Ah,0Dh,"Enter an option (1 = YES | 0 = NO) : ",0
 	   75 20 77 61 6E
 	   74 20 74 6F 20
@@ -86,114 +85,95 @@ Microsoft (R) Macro Assembler Version 14.23.28107.0	    04/24/20 00:10:26
 
  00000000			.code
  00000000			main PROC
- 00000000  BA 000000AF R		mov		EDX, OFFSET hello
- 00000005  E8 00000000 E		call	WriteString
-					.REPEAT
+ 00000000  BA 000000AF R	    mov     EDX, OFFSET hello
+ 00000005  E8 00000000 E	    call    WriteString
+				    .REPEAT
  0000000A		   *@C0001:
-						; RANDOMIZE ARRAY
- 0000000A  E8 00000047				call	RandomizeArray
+				        ; RANDOMIZE ARRAY
+ 0000000A  E8 00000047		        call    RandomizeArray
 
-						; PRINT UNSORTED ARRAY
- 0000000F  BA 00000102 R			mov		EDX, OFFSET print1
- 00000014  E8 00000000 E			call	WriteString
- 00000019  E8 00000058				call	PrintArray
+				        ; PRINT UNSORTED ARRAY
+ 0000000F  BA 00000102 R	        mov     EDX, OFFSET print1
+ 00000014  E8 00000000 E	        call    WriteString
+ 00000019  E8 00000058		        call    PrintArray
 
-						; BUBBLE SORT ARRAY
-						
- 0000001E  E8 00000073					call	BubbleSort
-						
+				        ; BUBBLE SORT ARRAY
+ 0000001E  E8 00000073		        call    BubbleSort
+				        
+				        ; PRINT SORTED ARRAY
+ 00000023  BA 00000114 R	        mov     EDX, OFFSET print2
+ 00000028  E8 00000000 E	        call    WriteString
+ 0000002D  E8 00000044		        call    PrintArray
 
-						; PRINT SORTED ARRAY
- 00000023  BA 00000114 R			mov		EDX, OFFSET print2
- 00000028  E8 00000000 E			call	WriteString
- 0000002D  E8 00000044				call	PrintArray
-
-						; PROMPT TO RUN AGAIN
- 00000032  BA 00000050 R			mov		EDX, OFFSET prompt1
- 00000037  E8 00000000 E			call	WriteString
- 0000003C  E8 00000000 E			call	ReadInt
-					.UNTIL EAX == 0
+				        ; PROMPT TO RUN AGAIN
+ 00000032  BA 00000050 R	        mov     EDX, OFFSET prompt1
+ 00000037  E8 00000000 E	        call    WriteString
+ 0000003C  E8 00000000 E	        call    ReadInt
+				    .UNTIL EAX == 0
  00000041  0B C0	   *	    or	eax, eax
  00000043  75 C5	   *	    jne    @C0001
- 00000045  BA 000000F9 R		mov		EDX, OFFSET bye
- 0000004A  E8 00000000 E		call	WriteString
-					exit
+ 00000045  BA 000000F9 R	    mov     EDX, OFFSET bye
+ 0000004A  E8 00000000 E	    call    WriteString
+				    exit
  0000004F  6A 00	   *	    push   +000000000h
  00000051  E8 00000000 E   *	    call   ExitProcess
 
  00000056			main ENDP
 
  00000056			RandomizeArray PROC
- 00000056  BE 00000000			mov	ESI, 0
- 0000005B  B9 00000014			mov	ECX, LENGTHOF myArr
- 00000060				LR:
- 00000060  B8 000003E8				mov		EAX, 1000
- 00000065  E8 00000000 E			call	RandomRange
- 0000006A  89 86 00000000 R			mov		[myArr + ESI], EAX
- 00000070  83 C6 04				add		ESI, TYPE myArr
- 00000073  E2 EB				loop	LR
- 00000075  C3				ret
+ 00000056  BE 00000000		    mov    ESI, 0
+ 0000005B  B9 00000014		    mov    ECX, LENGTHOF myArr
+ 00000060			    LR:
+ 00000060  B8 000003E8		        mov     EAX, 1000
+ 00000065  E8 00000000 E	        call    RandomRange
+ 0000006A  89 86 00000000 R	        mov     [myArr + ESI], EAX
+ 00000070  83 C6 04		        add     ESI, TYPE myArr
+ 00000073  E2 EB		        loop    LR
+ 00000075  C3			    ret
  00000076			RandomizeArray ENDP
 
  00000076			PrintArray PROC
- 00000076  BE 00000000			mov	ESI, 0
- 0000007B  B9 00000014			mov	ECX, LENGTHOF myArr
- 00000080				LP:
- 00000080  8B 86 00000000 R			mov 	EAX, [myArr + ESI]
- 00000086  E8 00000000 E			call	WriteDec
- 0000008B  E8 00000000 E			call	Crlf
- 00000090  83 C6 04				add		ESI, TYPE myArr
- 00000093  E2 EB				loop	LP
- 00000095  C3				ret
+ 00000076  BE 00000000		    mov    ESI, 0
+ 0000007B  B9 00000014		    mov    ECX, LENGTHOF myArr
+ 00000080			    LP:
+ 00000080  8B 86 00000000 R	        mov     EAX, [myArr + ESI]
+ 00000086  E8 00000000 E	        call    WriteDec
+ 0000008B  E8 00000000 E	        call    Crlf
+ 00000090  83 C6 04		        add     ESI, TYPE myArr
+ 00000093  E2 EB		        loop    LP
+ 00000095  C3			    ret
  00000096			PrintArray ENDP
 
  00000096			BubbleSort PROC
- 00000096  BB 00000014			mov		EBX, LENGTHOF myArr
-					.REPEAT
+ 00000096  BB 00000014		    mov     EBX, LENGTHOF myArr
+				    .REPEAT
  0000009B		   *@C0003:
- 0000009B  BE 00000000				mov		ESI, 0
- 000000A0  B9 00000014				mov		ECX, LENGTHOF myArr
-						.REPEAT
+ 0000009B  BE 00000000		        mov     ESI, 0
+ 000000A0  B9 00000014		        mov     ECX, LENGTHOF myArr
+				        .REPEAT
  000000A5		   *@C0004:
- 000000A5  8B 86 00000000 R				mov		EAX, [myArr + ESI]
-							.IF	EAX >= [myArr + ESI + TYPE myArr]		; If (myArr[i] < myArr[i + 1])
+ 000000A5  8B 86 00000000 R	            mov     EAX, [myArr + ESI]
+				            .IF    EAX >= [myArr + ESI + TYPE myArr]        ; If (myArr[i] < myArr[i + 1])
  000000AB  3B 86 00000004 R *	    cmp    eax, [myArr + esi + type myArr]
  000000B1  72 0C	   *	    jb	@C0005
- 000000B3  87 86 00000004 R					xchg	EAX, [myArr + ESI + TYPE myArr]
- 000000B9  89 86 00000000 R					mov		[myArr + ESI], EAX
-							.ENDIF
-							
+ 000000B3  87 86 00000004 R	                xchg    EAX, [myArr + ESI + TYPE myArr]
+ 000000B9  89 86 00000000 R	                mov     [myArr + ESI], EAX
+				            .ENDIF
+				            
  000000BF		   *@C0005:
- 000000BF  83 C6 04					add		ESI, TYPE myArr
- 000000C2  49						dec		ECX
-						.UNTIL ECX == 0
+ 000000BF  83 C6 04		            add     ESI, TYPE myArr
+ 000000C2  49			            dec     ECX
+				        .UNTIL ECX == 0
  000000C3  0B C9	   *	    or	ecx, ecx
  000000C5  75 DE	   *	    jne    @C0004
- 000000C7  4B				dec		EBX
-					.UNTIL EBX == 0
+ 000000C7  4B			    dec     EBX
+				    .UNTIL EBX == 0
  000000C8  0B DB	   *	    or	ebx, ebx
  000000CA  75 CF	   *	    jne    @C0003
- 000000CC  C3				ret
+ 000000CC  C3			    ret
  000000CD			BubbleSort ENDP
 				END main
-				; 4,2,5,1,3
-
-				;	mov		ESI, 0
-				;	mov		ECX, LENGTHOF myArr
-				;	LB:
-				;		mov		EAX, [myArr + ESI]
-				;		cmp		EAX, [myArr + ESI + TYPE myArr]
-				;		jge		SwapVal
-				;		CONT:
-				;		add		ESI, TYPE myArr
-				;
-				;		loop	LB
-				;	ret
-				;	SwapVal:
-				;		xchg	EAX, [myArr + ESI + TYPE myArr]
-				;		mov		[myArr + ESI], EAX
-				;		jmp		CONT
-Microsoft (R) Macro Assembler Version 14.23.28107.0	    04/24/20 00:10:26
+Microsoft (R) Macro Assembler Version 14.23.28107.0	    04/24/20 02:06:44
 <assignment7                                                  Symbols 2 - 1
 
 
