@@ -43,13 +43,13 @@ main PROC
 	cmp     EAX, 2
 	je      SUBTRACTION
 	
-	cmp		EAX, 3
+	cmp     EAX, 3
 	je      DIVISION
 
 	cmp     EAX, 4
 	je      MULTIPLICATION
 	
-	cmp		EAX, 5
+	cmp     EAX, 5
 	je      FACTORIAL
 
 	cmp     EAX, 6
