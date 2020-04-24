@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler Version 14.23.28107.0	    04/23/20 11:05:08
+Microsoft (R) Macro Assembler Version 14.23.28107.0	    04/24/20 00:03:22
 <assignment 8                                                 Page 1 - 1
 
 
@@ -51,7 +51,10 @@ Microsoft (R) Macro Assembler Version 14.23.28107.0	    04/23/20 11:05:08
 	   20 61 76 61 69
 	   6C 61 62 6C 65
 	   3A 0D 0A 00
- 0000005F 31 3A 20 2B 0D	prompt0	BYTE	"1: +",0dh,0ah,"2: -",0dh,0ah,"3: /",0dh,0ah,"4: *",0dh,0ah,"5: n!",0dh,0ah,"6: 2^n",0dh,0ah,"Enter a mathematical operation:",0
+ 0000005F 0D 0A 47 6F 6F	bye		BYTE	0dh,0ah,"Goodbye!",0dh,0ah,0
+	   64 62 79 65 21
+	   0D 0A 00
+ 0000006C 31 3A 20 2B 0D	prompt0	BYTE	"1: +",0dh,0ah,"2: -",0dh,0ah,"3: /",0dh,0ah,"4: *",0dh,0ah,"5: n!",0dh,0ah,"6: 2^n",0dh,0ah,"Enter a mathematical operation: ",0
 	   0A 32 3A 20 2D
 	   0D 0A 33 3A 20
 	   2F 0D 0A 34 3A
@@ -65,98 +68,235 @@ Microsoft (R) Macro Assembler Version 14.23.28107.0	    04/23/20 11:05:08
 	   69 63 61 6C 20
 	   6F 70 65 72 61
 	   74 69 6F 6E 3A
-	   00
- 000000A6 45 6E 74 65 72	prompt1 BYTE	"Enter the first number:",0
+	   20 00
+ 000000B4 45 6E 74 65 72	prompt1 BYTE	"Enter the first number: ",0
 	   20 74 68 65 20
 	   66 69 72 73 74
 	   20 6E 75 6D 62
-	   65 72 3A 00
- 000000BE 45 6E 74 65 72	prompt2	BYTE	"Enter the second number:",0
+	   65 72 3A 20 00
+ 000000CD 45 6E 74 65 72	prompt2	BYTE	"Enter the second number: ",0
 	   20 74 68 65 20
 	   73 65 63 6F 6E
 	   64 20 6E 75 6D
-	   62 65 72 3A 00
- 000000D7 52 65 73 75 6C	output	BYTE	"Result:",0
+	   62 65 72 3A 20
+	   00
+ 000000E7 52 65 73 75 6C	output	BYTE	"Result:",0
 	   74 3A 00
 
  00000000			.code
  00000000			main PROC
 					; PRINT WELCOME MESSAGE
- 00000000  BA 00000010 R		mov		EDX, OFFSET hello
+ 00000000  BA 00000010 R		mov     EDX, OFFSET hello
  00000005  E8 00000000 E		call	WriteString
 
 					; PRINT OPERATION PROMPT
- 0000000A  BA 0000005F R		mov		EDX, OFFSET prompt0
+ 0000000A  BA 0000006C R		mov     EDX, OFFSET prompt0
  0000000F  E8 00000000 E		call	WriteString
 
 					; INPUT OPERATION 
  00000014  E8 00000000 E		call	ReadInt
- 00000019  A3 00000000 R		mov		opInput, EAX
+ 00000019  A3 00000000 R		mov     opInput, EAX
 
 					; MENU OPTIONS
- 0000001E  A1 00000000 R		mov		EAX, opInput
+ 0000001E  A1 00000000 R		mov     EAX, opInput
 					
  00000023  83 F8 01			cmp		EAX, 1
- 00000026  74 19			je      ADDITION
+ 00000026  74 29			je      ADDITION
 
  00000028  83 F8 02			cmp     EAX, 2
- 0000002B  74 5B			je      SUBTRACTION
+ 0000002B  74 6B			je      SUBTRACTION
 					
  0000002D  83 F8 03			cmp		EAX, 3
- 00000030  74 56			je      DIVISION
+ 00000030  0F 84 000000A9		je      DIVISION
 
- 00000032  83 F8 04			cmp     EAX, 4
- 00000035  74 51			je      MULTIPLICATION
+ 00000036  83 F8 04			cmp     EAX, 4
+ 00000039  0F 84 000000EE		je      MULTIPLICATION
 					
- 00000037  83 F8 05			cmp		EAX, 5
- 0000003A  74 4C			je      FACTORIAL
+ 0000003F  83 F8 05			cmp		EAX, 5
+ 00000042  0F 84 0000012C		je      FACTORIAL
 
- 0000003C  83 F8 06			cmp     EAX, 6
- 0000003F  74 47			je      TWOEXPN
+ 00000048  83 F8 06			cmp     EAX, 6
+ 0000004B  0F 84 0000015E		je      POWER
 
- 00000041				ADDITION:
- 00000041  BA 000000A6 R			mov		EDX, OFFSET prompt1
- 00000046  E8 00000000 E			call	WriteString
+ 00000051				ADDITION:
+						; PROMPT FIRST INPUT
+ 00000051  BA 000000B4 R			mov     EDX, OFFSET prompt1
+ 00000056  E8 00000000 E			call	WriteString
 
 						; INPUT FIRST NUMBER
- 0000004B  E8 00000000 E			call	ReadInt
- 00000050  A3 00000004 R			mov		fstNum, EAX
+ 0000005B  E8 00000000 E			call	ReadInt
+ 00000060  A3 00000004 R			mov     fstNum, EAX
 
 						; PROMPT 2ND INPUT
- 00000055  BA 000000BE R			mov		EDX, OFFSET prompt2
- 0000005A  E8 00000000 E			call	WriteString
+ 00000065  BA 000000CD R			mov     EDX, OFFSET prompt2
+ 0000006A  E8 00000000 E			call	WriteString
 
 						; INPUT SECOND NUMBER
- 0000005F  E8 00000000 E			call	ReadInt
- 00000064  A3 00000008 R			mov		sndNum, EAX
+ 0000006F  E8 00000000 E			call	ReadInt
+ 00000074  A3 00000008 R			mov     sndNum, EAX
 
 						; ADDITION
- 00000069  A1 00000004 R			mov		EAX, fstNum
- 0000006E  03 05 00000008 R			add		EAX, sndNum
+ 00000079  A1 00000004 R			mov     EAX, fstNum
+ 0000007E  03 05 00000008 R			add     EAX, sndNum
 						
- 00000074  BA 000000D7 R			mov		EDX, OFFSET output
- 00000079  E8 00000000 E			call	WriteString
+						; OUTPUT RESULT
+ 00000084  BA 000000E7 R			mov     EDX, OFFSET output
+ 00000089  E8 00000000 E			call	WriteString
+ 0000008E  E8 00000000 E			call	WriteDec
 
- 0000007E  E8 00000000 E			call	WriteDec
+ 00000093  E8 00000153				call	QUIT
 
- 00000083  E8 00000000				call	QUIT
- 00000088				SUBTRACTION:
+ 00000098				SUBTRACTION:
+						; PROMPT FIRST INPUT
+ 00000098  BA 000000B4 R			mov     EDX, OFFSET prompt1
+ 0000009D  E8 00000000 E			call	WriteString
 
- 00000088				DIVISION:
+						; INPUT FIRST NUMBER
+ 000000A2  E8 00000000 E			call	ReadInt
+ 000000A7  A3 00000004 R			mov     fstNum, EAX
 
- 00000088				MULTIPLICATION:
+						; PROMPT 2ND INPUT
+ 000000AC  BA 000000CD R			mov     EDX, OFFSET prompt2
+ 000000B1  E8 00000000 E			call	WriteString
 
- 00000088				FACTORIAL:
+						; INPUT SECOND NUMBER
+ 000000B6  E8 00000000 E			call	ReadInt
+ 000000BB  A3 00000008 R			mov     sndNum, EAX
 
- 00000088				TWOEXPN:
+						; SUBTRACTION
+ 000000C0  A1 00000004 R			mov     EAX, fstNum
+ 000000C5  2B 05 00000008 R			sub     EAX, sndNum
 
- 00000088				QUIT:
+						; OUTPUT RESULT
+ 000000CB  BA 000000E7 R			mov     EDX, OFFSET output
+ 000000D0  E8 00000000 E			call	WriteString
+ 000000D5  E8 00000000 E			call	WriteDec
+
+ 000000DA  E8 0000010C				call	QUIT
+
+ 000000DF				DIVISION:
+						; PROMPT FIRST INPUT
+ 000000DF  BA 000000B4 R			mov     EDX, OFFSET prompt1
+ 000000E4  E8 00000000 E			call	WriteString
+
+						; INPUT FIRST NUMBER
+ 000000E9  E8 00000000 E			call	ReadInt
+ 000000EE  A3 00000004 R			mov     fstNum, EAX
+
+						; PROMPT 2ND INPUT
+ 000000F3  BA 000000CD R			mov     EDX, OFFSET prompt2
+ 000000F8  E8 00000000 E			call	WriteString
+
+						; INPUT SECOND NUMBER
+ 000000FD  E8 00000000 E			call	ReadInt
+ 00000102  A3 00000008 R			mov     sndNum, EAX
+
+						; DIVISION
+ 00000107  BA 00000000				mov     EDX, 0
+ 0000010C  A1 00000004 R			mov     EAX, fstNum
+ 00000111  8B 0D 00000008 R			mov     ECX, sndNum
+ 00000117  F7 F1				div     ECX
+						
+						; OUTPUT RESULT
+ 00000119  BA 000000E7 R			mov     EDX, OFFSET output
+ 0000011E  E8 00000000 E			call	WriteString
+ 00000123  E8 00000000 E			call	WriteDec
+
+ 00000128  E8 000000BE				call	QUIT
+
+
+ 0000012D				MULTIPLICATION:
+						; PROMPT FIRST INPUT
+ 0000012D  BA 000000B4 R			mov     EDX, OFFSET prompt1
+ 00000132  E8 00000000 E			call	WriteString
+
+						; INPUT FIRST NUMBER
+ 00000137  E8 00000000 E			call	ReadInt
+ 0000013C  A3 00000004 R			mov     fstNum, EAX
+
+						; PROMPT 2ND INPUT
+ 00000141  BA 000000CD R			mov     EDX, OFFSET prompt2
+ 00000146  E8 00000000 E			call	WriteString
+
+						; INPUT SECOND NUMBER
+ 0000014B  E8 00000000 E			call	ReadInt
+ 00000150  A3 00000008 R			mov     sndNum, EAX
+
+						; MULTIPLICATION
+ 00000155  A1 00000004 R			mov     EAX, fstNum
+ 0000015A  F7 25 00000008 R			mul     sndNum
+						
+						; OUTPUT RESULT
+ 00000160  BA 000000E7 R			mov     EDX, OFFSET output
+ 00000165  E8 00000000 E			call	WriteString
+ 0000016A  E8 00000000 E			call	WriteDec
+
+ 0000016F  E8 00000077				call	QUIT
+
+ 00000174				FACTORIAL:
+						; PROMPT FIRST INPUT
+ 00000174  BA 000000B4 R			mov     EDX, OFFSET prompt1
+ 00000179  E8 00000000 E			call	WriteString
+
+						; INPUT FIRST NUMBER
+ 0000017E  E8 00000000 E			call	ReadInt
+ 00000183  A3 00000004 R			mov     fstNum, EAX
+						
+						; FACTORIAL LOOP
+ 00000188  8B 0D 00000004 R			mov     ECX, fstNum
+ 0000018E  A1 00000004 R			mov		EAX, fstNum
+						.REPEAT
+ 00000193		   *@C0001:
+ 00000193  49						dec     ECX
+ 00000194  F7 E1					mul     ECX
+						.UNTIL ECX == 1
+ 00000196  83 F9 01	   *	    cmp    ecx, 001h
+ 00000199  75 F8	   *	    jne    @C0001
+						
+						; OUTPUT RESULT
+ 0000019B  BA 000000E7 R			mov     EDX, OFFSET output
+ 000001A0  E8 00000000 E			call	WriteString
+ 000001A5  E8 00000000 E			call	WriteDec
+
+ 000001AA  E8 0000003C				call	QUIT
+
+ 000001AF				POWER:
+						; PROMPT FIRST INPUT
+ 000001AF  BA 000000B4 R			mov     EDX, OFFSET prompt1
+ 000001B4  E8 00000000 E			call	WriteString
+
+						; INPUT FIRST NUMBER
+ 000001B9  E8 00000000 E			call	ReadInt
+ 000001BE  A3 00000004 R			mov     fstNum, EAX
+						
+						; POWER
+ 000001C3  8B C8				mov		ECX, EAX
+ 000001C5  B8 00000002				mov     EAX, 2
+ 000001CA  BB 00000002				mov     EBX, 2
+						.REPEAT
+ 000001CF		   *@C0003:
+ 000001CF  F7 E3					mul		EBX
+ 000001D1  49						dec     ECX
+						.UNTIL ECX == 1
+ 000001D2  83 F9 01	   *	    cmp    ecx, 001h
+ 000001D5  75 F8	   *	    jne    @C0003
+
+						; OUTPUT RESULT
+ 000001D7  BA 000000E7 R			mov     EDX, OFFSET output
+ 000001DC  E8 00000000 E			call	WriteString
+ 000001E1  E8 00000000 E			call	WriteDec
+
+ 000001E6  E8 00000000				call	QUIT
+
+ 000001EB				QUIT:
+ 000001EB  BA 0000005F R			mov     EDX, OFFSET bye
+ 000001F0  E8 00000000 E			call	WriteString
 						exit
- 00000088  6A 00	   *	    push   +000000000h
- 0000008A  E8 00000000 E   *	    call   ExitProcess
- 0000008F			main ENDP
+ 000001F5  6A 00	   *	    push   +000000000h
+ 000001F7  E8 00000000 E   *	    call   ExitProcess
+ 000001FC			main ENDP
 				END main
-Microsoft (R) Macro Assembler Version 14.23.28107.0	    04/23/20 11:05:08
+Microsoft (R) Macro Assembler Version 14.23.28107.0	    04/24/20 00:03:22
 <assignment 8                                                 Symbols 2 - 1
 
 
@@ -250,8 +390,8 @@ Segments and Groups:
 
 FLAT . . . . . . . . . . . . . .	GROUP
 STACK  . . . . . . . . . . . . .	32 Bit	 00001000 Para	  Stack	  'STACK'	 
-_DATA  . . . . . . . . . . . . .	32 Bit	 000000DF Para	  Public  'DATA'	
-_TEXT  . . . . . . . . . . . . .	32 Bit	 0000008F Para	  Public  'CODE'	
+_DATA  . . . . . . . . . . . . .	32 Bit	 000000EF Para	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 000001FC Para	  Public  'CODE'	
 
 
 Procedures, parameters, and locals:
@@ -358,14 +498,14 @@ WriteStackFrame  . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External
 WriteString  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteToFile  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteWindowsMsg  . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
-main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 0000008F Public STDCALL
-  ADDITION . . . . . . . . . . .	L Near	 00000041 _TEXT	
-  SUBTRACTION  . . . . . . . . .	L Near	 00000088 _TEXT	
-  DIVISION . . . . . . . . . . .	L Near	 00000088 _TEXT	
-  MULTIPLICATION . . . . . . . .	L Near	 00000088 _TEXT	
-  FACTORIAL  . . . . . . . . . .	L Near	 00000088 _TEXT	
-  TWOEXPN  . . . . . . . . . . .	L Near	 00000088 _TEXT	
-  QUIT . . . . . . . . . . . . .	L Near	 00000088 _TEXT	
+main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 000001FC Public STDCALL
+  ADDITION . . . . . . . . . . .	L Near	 00000051 _TEXT	
+  SUBTRACTION  . . . . . . . . .	L Near	 00000098 _TEXT	
+  DIVISION . . . . . . . . . . .	L Near	 000000DF _TEXT	
+  MULTIPLICATION . . . . . . . .	L Near	 0000012D _TEXT	
+  FACTORIAL  . . . . . . . . . .	L Near	 00000174 _TEXT	
+  POWER  . . . . . . . . . . . .	L Near	 000001AF _TEXT	
+  QUIT . . . . . . . . . . . . .	L Near	 000001EB _TEXT	
 printf . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
 scanf  . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
 wsprintfA  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
@@ -587,6 +727,7 @@ WriteConsole . . . . . . . . . .	Text   	 WriteConsoleA
 black  . . . . . . . . . . . . .	Number	 00000000h   
 blue . . . . . . . . . . . . . .	Number	 00000001h   
 brown  . . . . . . . . . . . . .	Number	 00000006h   
+bye  . . . . . . . . . . . . . .	Byte	 0000005F _DATA	
 cyan . . . . . . . . . . . . . .	Number	 00000003h   
 exit . . . . . . . . . . . . . .	Text   	 INVOKE ExitProcess,0
 fstNum . . . . . . . . . . . . .	DWord	 00000004 _DATA	
@@ -601,10 +742,10 @@ lightMagenta . . . . . . . . . .	Number	 0000000Dh
 lightRed . . . . . . . . . . . .	Number	 0000000Ch   
 magenta  . . . . . . . . . . . .	Number	 00000005h   
 opInput  . . . . . . . . . . . .	DWord	 00000000 _DATA	
-output . . . . . . . . . . . . .	Byte	 000000D7 _DATA	
-prompt0  . . . . . . . . . . . .	Byte	 0000005F _DATA	
-prompt1  . . . . . . . . . . . .	Byte	 000000A6 _DATA	
-prompt2  . . . . . . . . . . . .	Byte	 000000BE _DATA	
+output . . . . . . . . . . . . .	Byte	 000000E7 _DATA	
+prompt0  . . . . . . . . . . . .	Byte	 0000006C _DATA	
+prompt1  . . . . . . . . . . . .	Byte	 000000B4 _DATA	
+prompt2  . . . . . . . . . . . .	Byte	 000000CD _DATA	
 red  . . . . . . . . . . . . . .	Number	 00000004h   
 result . . . . . . . . . . . . .	DWord	 0000000C _DATA	
 sndNum . . . . . . . . . . . . .	DWord	 00000008 _DATA	
