@@ -36,12 +36,8 @@ main PROC
 		call	PrintArray
 
 		; BUBBLE SORT ARRAY
-		mov		EBX, 20
-		.REPEAT
-			call	BubbleSort
-			dec		EBX
-		.UNTIL EBX == 0
-
+		call	BubbleSort
+		
 		; PRINT SORTED ARRAY
 		mov		EDX, OFFSET print2
 		call	WriteString
@@ -83,18 +79,22 @@ PrintArray PROC
 PrintArray ENDP
 
 BubbleSort PROC
-	mov		ESI, 0
-	mov		ECX, LENGTHOF myArr
+	mov		EBX, LENGTHOF myArr
 	.REPEAT
-		mov		EAX, [myArr + ESI]
-		.IF	EAX >= [myArr + ESI + TYPE myArr]		; If (myArr[i] < myArr[i + 1])
-			xchg	EAX, [myArr + ESI + TYPE myArr]
-			mov		[myArr + ESI], EAX
-		.ENDIF
-		
-		add		ESI, TYPE myArr
-		dec		ECX
-	.UNTIL ECX == 0
+		mov		ESI, 0
+		mov		ECX, LENGTHOF myArr
+		.REPEAT
+			mov		EAX, [myArr + ESI]
+			.IF	EAX >= [myArr + ESI + TYPE myArr]		; If (myArr[i] < myArr[i + 1])
+				xchg	EAX, [myArr + ESI + TYPE myArr]
+				mov		[myArr + ESI], EAX
+			.ENDIF
+			
+			add		ESI, TYPE myArr
+			dec		ECX
+		.UNTIL ECX == 0
+	dec		EBX
+	.UNTIL EBX == 0
 	ret
 BubbleSort ENDP
 END main

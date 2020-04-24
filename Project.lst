@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler Version 14.23.28107.0	    04/16/20 00:01:55
+Microsoft (R) Macro Assembler Version 14.23.28107.0	    04/24/20 00:10:26
 <assignment7                                                  Page 1 - 1
 
 
@@ -91,86 +91,88 @@ Microsoft (R) Macro Assembler Version 14.23.28107.0	    04/16/20 00:01:55
 					.REPEAT
  0000000A		   *@C0001:
 						; RANDOMIZE ARRAY
- 0000000A  E8 00000051				call	RandomizeArray
+ 0000000A  E8 00000047				call	RandomizeArray
 
 						; PRINT UNSORTED ARRAY
  0000000F  BA 00000102 R			mov		EDX, OFFSET print1
  00000014  E8 00000000 E			call	WriteString
- 00000019  E8 00000062				call	PrintArray
+ 00000019  E8 00000058				call	PrintArray
 
 						; BUBBLE SORT ARRAY
- 0000001E  BB 00000014				mov		EBX, 20
-						.REPEAT
- 00000023		   *@C0002:
- 00000023  E8 00000078					call	BubbleSort
- 00000028  4B						dec		EBX
-						.UNTIL EBX == 0
- 00000029  0B DB	   *	    or	ebx, ebx
- 0000002B  75 F6	   *	    jne    @C0002
+						
+ 0000001E  E8 00000073					call	BubbleSort
+						
 
 						; PRINT SORTED ARRAY
- 0000002D  BA 00000114 R			mov		EDX, OFFSET print2
- 00000032  E8 00000000 E			call	WriteString
- 00000037  E8 00000044				call	PrintArray
+ 00000023  BA 00000114 R			mov		EDX, OFFSET print2
+ 00000028  E8 00000000 E			call	WriteString
+ 0000002D  E8 00000044				call	PrintArray
 
 						; PROMPT TO RUN AGAIN
- 0000003C  BA 00000050 R			mov		EDX, OFFSET prompt1
- 00000041  E8 00000000 E			call	WriteString
- 00000046  E8 00000000 E			call	ReadInt
+ 00000032  BA 00000050 R			mov		EDX, OFFSET prompt1
+ 00000037  E8 00000000 E			call	WriteString
+ 0000003C  E8 00000000 E			call	ReadInt
 					.UNTIL EAX == 0
- 0000004B  0B C0	   *	    or	eax, eax
- 0000004D  75 BB	   *	    jne    @C0001
- 0000004F  BA 000000F9 R		mov		EDX, OFFSET bye
- 00000054  E8 00000000 E		call	WriteString
+ 00000041  0B C0	   *	    or	eax, eax
+ 00000043  75 C5	   *	    jne    @C0001
+ 00000045  BA 000000F9 R		mov		EDX, OFFSET bye
+ 0000004A  E8 00000000 E		call	WriteString
 					exit
- 00000059  6A 00	   *	    push   +000000000h
- 0000005B  E8 00000000 E   *	    call   ExitProcess
+ 0000004F  6A 00	   *	    push   +000000000h
+ 00000051  E8 00000000 E   *	    call   ExitProcess
 
- 00000060			main ENDP
+ 00000056			main ENDP
 
- 00000060			RandomizeArray PROC
- 00000060  BE 00000000			mov	ESI, 0
- 00000065  B9 00000014			mov	ECX, LENGTHOF myArr
- 0000006A				LR:
- 0000006A  B8 000003E8				mov		EAX, 1000
- 0000006F  E8 00000000 E			call	RandomRange
- 00000074  89 86 00000000 R			mov		[myArr + ESI], EAX
- 0000007A  83 C6 04				add		ESI, TYPE myArr
- 0000007D  E2 EB				loop	LR
- 0000007F  C3				ret
- 00000080			RandomizeArray ENDP
+ 00000056			RandomizeArray PROC
+ 00000056  BE 00000000			mov	ESI, 0
+ 0000005B  B9 00000014			mov	ECX, LENGTHOF myArr
+ 00000060				LR:
+ 00000060  B8 000003E8				mov		EAX, 1000
+ 00000065  E8 00000000 E			call	RandomRange
+ 0000006A  89 86 00000000 R			mov		[myArr + ESI], EAX
+ 00000070  83 C6 04				add		ESI, TYPE myArr
+ 00000073  E2 EB				loop	LR
+ 00000075  C3				ret
+ 00000076			RandomizeArray ENDP
 
- 00000080			PrintArray PROC
- 00000080  BE 00000000			mov	ESI, 0
- 00000085  B9 00000014			mov	ECX, LENGTHOF myArr
- 0000008A				LP:
- 0000008A  8B 86 00000000 R			mov 	EAX, [myArr + ESI]
- 00000090  E8 00000000 E			call	WriteDec
- 00000095  E8 00000000 E			call	Crlf
- 0000009A  83 C6 04				add		ESI, TYPE myArr
- 0000009D  E2 EB				loop	LP
- 0000009F  C3				ret
- 000000A0			PrintArray ENDP
+ 00000076			PrintArray PROC
+ 00000076  BE 00000000			mov	ESI, 0
+ 0000007B  B9 00000014			mov	ECX, LENGTHOF myArr
+ 00000080				LP:
+ 00000080  8B 86 00000000 R			mov 	EAX, [myArr + ESI]
+ 00000086  E8 00000000 E			call	WriteDec
+ 0000008B  E8 00000000 E			call	Crlf
+ 00000090  83 C6 04				add		ESI, TYPE myArr
+ 00000093  E2 EB				loop	LP
+ 00000095  C3				ret
+ 00000096			PrintArray ENDP
 
- 000000A0			BubbleSort PROC
- 000000A0  BE 00000000			mov		ESI, 0
- 000000A5  B9 00000014			mov		ECX, LENGTHOF myArr
+ 00000096			BubbleSort PROC
+ 00000096  BB 00000014			mov		EBX, LENGTHOF myArr
 					.REPEAT
- 000000AA		   *@C0005:
- 000000AA  8B 86 00000000 R			mov		EAX, [myArr + ESI]
-						.IF	EAX >= [myArr + ESI + TYPE myArr]		; If (myArr[i] < myArr[i + 1])
- 000000B0  3B 86 00000004 R *	    cmp    eax, [myArr + esi + type myArr]
- 000000B6  72 0C	   *	    jb	@C0006
- 000000B8  87 86 00000004 R				xchg	EAX, [myArr + ESI + TYPE myArr]
- 000000BE  89 86 00000000 R				mov		[myArr + ESI], EAX
-						.ENDIF
-						
- 000000C4		   *@C0006:
- 000000C4  83 C6 04				add		ESI, TYPE myArr
- 000000C7  49					dec		ECX
-					.UNTIL ECX == 0
- 000000C8  0B C9	   *	    or	ecx, ecx
- 000000CA  75 DE	   *	    jne    @C0005
+ 0000009B		   *@C0003:
+ 0000009B  BE 00000000				mov		ESI, 0
+ 000000A0  B9 00000014				mov		ECX, LENGTHOF myArr
+						.REPEAT
+ 000000A5		   *@C0004:
+ 000000A5  8B 86 00000000 R				mov		EAX, [myArr + ESI]
+							.IF	EAX >= [myArr + ESI + TYPE myArr]		; If (myArr[i] < myArr[i + 1])
+ 000000AB  3B 86 00000004 R *	    cmp    eax, [myArr + esi + type myArr]
+ 000000B1  72 0C	   *	    jb	@C0005
+ 000000B3  87 86 00000004 R					xchg	EAX, [myArr + ESI + TYPE myArr]
+ 000000B9  89 86 00000000 R					mov		[myArr + ESI], EAX
+							.ENDIF
+							
+ 000000BF		   *@C0005:
+ 000000BF  83 C6 04					add		ESI, TYPE myArr
+ 000000C2  49						dec		ECX
+						.UNTIL ECX == 0
+ 000000C3  0B C9	   *	    or	ecx, ecx
+ 000000C5  75 DE	   *	    jne    @C0004
+ 000000C7  4B				dec		EBX
+					.UNTIL EBX == 0
+ 000000C8  0B DB	   *	    or	ebx, ebx
+ 000000CA  75 CF	   *	    jne    @C0003
  000000CC  C3				ret
  000000CD			BubbleSort ENDP
 				END main
@@ -191,7 +193,7 @@ Microsoft (R) Macro Assembler Version 14.23.28107.0	    04/16/20 00:01:55
 				;		xchg	EAX, [myArr + ESI + TYPE myArr]
 				;		mov		[myArr + ESI], EAX
 				;		jmp		CONT
-Microsoft (R) Macro Assembler Version 14.23.28107.0	    04/16/20 00:01:55
+Microsoft (R) Macro Assembler Version 14.23.28107.0	    04/24/20 00:10:26
 <assignment7                                                  Symbols 2 - 1
 
 
@@ -293,7 +295,7 @@ Procedures, parameters, and locals:
 
                 N a m e                 Type     Value    Attr
 
-BubbleSort . . . . . . . . . . .	P Near	 000000A0 _TEXT	Length= 0000002D Public STDCALL
+BubbleSort . . . . . . . . . . .	P Near	 00000096 _TEXT	Length= 00000037 Public STDCALL
 CloseFile  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 CloseHandle  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 Clrscr . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
@@ -342,12 +344,12 @@ OpenInputFile  . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External
 ParseDecimal32 . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 ParseInteger32 . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 PeekConsoleInputA  . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
-PrintArray . . . . . . . . . . .	P Near	 00000080 _TEXT	Length= 00000020 Public STDCALL
-  LP . . . . . . . . . . . . . .	L Near	 0000008A _TEXT	
+PrintArray . . . . . . . . . . .	P Near	 00000076 _TEXT	Length= 00000020 Public STDCALL
+  LP . . . . . . . . . . . . . .	L Near	 00000080 _TEXT	
 Random32 . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 RandomRange  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
-RandomizeArray . . . . . . . . .	P Near	 00000060 _TEXT	Length= 00000020 Public STDCALL
-  LR . . . . . . . . . . . . . .	L Near	 0000006A _TEXT	
+RandomizeArray . . . . . . . . .	P Near	 00000056 _TEXT	Length= 00000020 Public STDCALL
+  LR . . . . . . . . . . . . . .	L Near	 00000060 _TEXT	
 Randomize  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 ReadChar . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 ReadConsoleA . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
@@ -398,7 +400,7 @@ WriteStackFrame  . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External
 WriteString  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteToFile  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteWindowsMsg  . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
-main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 00000060 Public STDCALL
+main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 00000056 Public STDCALL
 printf . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
 scanf  . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
 wsprintfA  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
