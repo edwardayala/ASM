@@ -1,10 +1,15 @@
-Microsoft (R) Macro Assembler Version 14.23.28107.0	    04/15/20 22:30:01
+Microsoft (R) Macro Assembler Version 14.23.28107.0	    04/30/20 10:48:06
 <assignment                                                   Page 1 - 1
 
 
 				;----------------------------------------------------------------------------+
 				TITLE assignment                                                             |
-				;                                                                            |
+				; Write a program that will prompt the user to enter a number.               |
+				; The program will determine whether or not the number is prime.             |
+				; Recall, a number is prime if it is only divisible by 1 and itself.         |
+				; Your output for each run of the program should be either:                  |
+				; "The number X is prime" or                                                 |
+				; "The number X is NOT prime".                                               |
 				;                                                                            |
 				;----------------------------------------------------------------------------+
 
@@ -28,17 +33,74 @@ Microsoft (R) Macro Assembler Version 14.23.28107.0	    04/15/20 22:30:01
 			      C 
 
  00000000			.data
-
+ 00000000 00000000		input   DWORD   ?
+ 00000004 45 6E 74 65 72	prompt  BYTE    "Enter a number:",0
+	   20 61 20 6E 75
+	   6D 62 65 72 3A
+	   00
+ 00000014 54 68 65 20 6E	output  BYTE    "The number ",0
+	   75 6D 62 65 72
+	   20 00
+ 00000020 20 69 73 20 70	isPrime BYTE    " is prime.",0dh,0ah,0
+	   72 69 6D 65 2E
+	   0D 0A 00
+ 0000002D 20 69 73 20 4E	ntPrime BYTE    " is NOT prime.",0dh,0ah,0
+	   4F 54 20 70 72
+	   69 6D 65 2E 0D
+	   0A 00
+ 0000003E 00000002		tstNum1 DWORD   2
+ 00000042 00000003		tstNum2 DWORD   3
+				; TEST NUMBERS: 2, 3, 5, 7, 11, & 13
  00000000			.code
  00000000			main PROC
+ 00000000  BA 00000004 R	  mov   EDX, OFFSET prompt
+ 00000005  E8 00000000 E	  call  WriteString
+ 0000000A  E8 00000000 E	  call  ReadInt
 
- 00000000  E8 00000000 E	  call DumpRegs
+ 0000000F  A3 00000000 R	  mov   input, EAX
+
+				  ; DIVISION
+
+				  .REPEAT
+ 00000014		   *@C0001:
+ 00000014  BB 00000002		    mov   EBX, 2
+ 00000019  BA 00000000		    mov   EDX, 0
+ 0000001E  A1 00000000 R	    mov   EAX, input
+ 00000023  8B CB		    mov   ECX, EBX
+ 00000025  F7 F1		    div   ECX
+ 00000027  43				inc   EBX
+ 00000028  83 FA 00			cmp   EDX, 0
+ 0000002B  74 0A			je    NOTPRIME
+ 0000002D  7F 28			jg    PRIME
+				  .UNTIL EBX == input-1
+ 0000002F  3B 1D FFFFFFFF R *	    cmp    ebx, input - 001h
+ 00000035  75 DD	   *	    jne    @C0001
+
+ 00000037			  NOTPRIME:
+ 00000037  BA 00000014 R	  mov   EDX, OFFSET output
+ 0000003C  E8 00000000 E	  call  WriteString
+ 00000041  A1 00000000 R	  mov   EAX, input
+ 00000046  E8 00000000 E	  call  WriteDec
+ 0000004B  BA 0000002D R	  mov   EDX, OFFSET ntPrime
+ 00000050  E8 00000000 E	  call  WriteString
+ 00000055  EB 20		  jmp   QUIT
+
+ 00000057			  PRIME:
+ 00000057  BA 00000014 R	  mov   EDX, OFFSET output
+ 0000005C  E8 00000000 E	  call  WriteString
+ 00000061  A1 00000000 R	  mov   EAX, input
+ 00000066  E8 00000000 E	  call  WriteDec
+ 0000006B  BA 00000020 R	  mov   EDX, OFFSET isPrime
+ 00000070  E8 00000000 E	  call  WriteString
+ 00000075  EB 00		  jmp   QUIT
+
+ 00000077			  QUIT:
 				  exit
- 00000005  6A 00	   *	    push   +000000000h
- 00000007  E8 00000000 E   *	    call   ExitProcess
- 0000000C			main ENDP
+ 00000077  6A 00	   *	    push   +000000000h
+ 00000079  E8 00000000 E   *	    call   ExitProcess
+ 0000007E			main ENDP
 				END main
-Microsoft (R) Macro Assembler Version 14.23.28107.0	    04/15/20 22:30:01
+Microsoft (R) Macro Assembler Version 14.23.28107.0	    04/30/20 10:48:06
 <assignment                                                   Symbols 2 - 1
 
 
@@ -132,8 +194,8 @@ Segments and Groups:
 
 FLAT . . . . . . . . . . . . . .	GROUP
 STACK  . . . . . . . . . . . . .	32 Bit	 00001000 Para	  Stack	  'STACK'	 
-_DATA  . . . . . . . . . . . . .	32 Bit	 00000000 Para	  Public  'DATA'	
-_TEXT  . . . . . . . . . . . . .	32 Bit	 0000000C Para	  Public  'CODE'	
+_DATA  . . . . . . . . . . . . .	32 Bit	 00000046 Para	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 0000007E Para	  Public  'CODE'	
 
 
 Procedures, parameters, and locals:
@@ -240,7 +302,10 @@ WriteStackFrame  . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External
 WriteString  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteToFile  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteWindowsMsg  . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
-main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 0000000C Public STDCALL
+main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 0000007E Public STDCALL
+  NOTPRIME . . . . . . . . . . .	L Near	 00000037 _TEXT	
+  PRIME  . . . . . . . . . . . .	L Near	 00000057 _TEXT	
+  QUIT . . . . . . . . . . . . .	L Near	 00000077 _TEXT	
 printf . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
 scanf  . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
 wsprintfA  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
@@ -466,6 +531,8 @@ cyan . . . . . . . . . . . . . .	Number	 00000003h
 exit . . . . . . . . . . . . . .	Text   	 INVOKE ExitProcess,0
 gray . . . . . . . . . . . . . .	Number	 00000008h   
 green  . . . . . . . . . . . . .	Number	 00000002h   
+input  . . . . . . . . . . . . .	DWord	 00000000 _DATA	
+isPrime  . . . . . . . . . . . .	Byte	 00000020 _DATA	
 lightBlue  . . . . . . . . . . .	Number	 00000009h   
 lightCyan  . . . . . . . . . . .	Number	 0000000Bh   
 lightGray  . . . . . . . . . . .	Number	 00000007h   
@@ -473,7 +540,12 @@ lightGreen . . . . . . . . . . .	Number	 0000000Ah
 lightMagenta . . . . . . . . . .	Number	 0000000Dh   
 lightRed . . . . . . . . . . . .	Number	 0000000Ch   
 magenta  . . . . . . . . . . . .	Number	 00000005h   
+ntPrime  . . . . . . . . . . . .	Byte	 0000002D _DATA	
+output . . . . . . . . . . . . .	Byte	 00000014 _DATA	
+prompt . . . . . . . . . . . . .	Byte	 00000004 _DATA	
 red  . . . . . . . . . . . . . .	Number	 00000004h   
+tstNum1  . . . . . . . . . . . .	DWord	 0000003E _DATA	
+tstNum2  . . . . . . . . . . . .	DWord	 00000042 _DATA	
 white  . . . . . . . . . . . . .	Number	 0000000Fh   
 wsprintf . . . . . . . . . . . .	Text   	 wsprintfA
 yellow . . . . . . . . . . . . .	Number	 0000000Eh   
