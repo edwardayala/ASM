@@ -34,10 +34,10 @@ main PROC
     mov   EAX, input
     mov   ECX, EBX
     div   ECX
-	inc   EBX
-	cmp   EDX, 0
-	je    NOTPRIME
-	jg    PRIME
+    inc   EBX
+    cmp   EDX, 0
+    je    NOTPRIME
+    jg    PRIME
   .UNTIL EBX == input-1
 
   NOTPRIME:
