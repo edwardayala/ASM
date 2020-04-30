@@ -1,16 +1,15 @@
-Microsoft (R) Macro Assembler Version 14.23.28107.0	    04/30/20 10:48:06
-<assignment                                                   Page 1 - 1
+Microsoft (R) Macro Assembler Version 14.23.28107.0	    04/30/20 11:09:57
+<quiz 6                                                       Page 1 - 1
 
 
 				;----------------------------------------------------------------------------+
-				TITLE assignment                                                             |
+				TITLE quiz 6                                                                 |
 				; Write a program that will prompt the user to enter a number.               |
 				; The program will determine whether or not the number is prime.             |
 				; Recall, a number is prime if it is only divisible by 1 and itself.         |
 				; Your output for each run of the program should be either:                  |
 				; "The number X is prime" or                                                 |
 				; "The number X is NOT prime".                                               |
-				;                                                                            |
 				;----------------------------------------------------------------------------+
 
 				INCLUDE Irvine32.inc
@@ -48,19 +47,18 @@ Microsoft (R) Macro Assembler Version 14.23.28107.0	    04/30/20 10:48:06
 	   4F 54 20 70 72
 	   69 6D 65 2E 0D
 	   0A 00
- 0000003E 00000002		tstNum1 DWORD   2
- 00000042 00000003		tstNum2 DWORD   3
-				; TEST NUMBERS: 2, 3, 5, 7, 11, & 13
+
  00000000			.code
  00000000			main PROC
+				  ; INPUT PROMPT
  00000000  BA 00000004 R	  mov   EDX, OFFSET prompt
  00000005  E8 00000000 E	  call  WriteString
  0000000A  E8 00000000 E	  call  ReadInt
 
+				  ; STORE INPUT
  0000000F  A3 00000000 R	  mov   input, EAX
 
-				  ; DIVISION
-
+				  ; CHECK IF PRIME
 				  .REPEAT
  00000014		   *@C0001:
  00000014  BB 00000002		    mov   EBX, 2
@@ -68,10 +66,10 @@ Microsoft (R) Macro Assembler Version 14.23.28107.0	    04/30/20 10:48:06
  0000001E  A1 00000000 R	    mov   EAX, input
  00000023  8B CB		    mov   ECX, EBX
  00000025  F7 F1		    div   ECX
- 00000027  43				inc   EBX
- 00000028  83 FA 00			cmp   EDX, 0
- 0000002B  74 0A			je    NOTPRIME
- 0000002D  7F 28			jg    PRIME
+ 00000027  43			    inc   EBX
+ 00000028  83 FA 00		    cmp   EDX, 0
+ 0000002B  74 0A		    je    NOTPRIME
+ 0000002D  7F 28		    jg    PRIME
 				  .UNTIL EBX == input-1
  0000002F  3B 1D FFFFFFFF R *	    cmp    ebx, input - 001h
  00000035  75 DD	   *	    jne    @C0001
@@ -100,8 +98,8 @@ Microsoft (R) Macro Assembler Version 14.23.28107.0	    04/30/20 10:48:06
  00000079  E8 00000000 E   *	    call   ExitProcess
  0000007E			main ENDP
 				END main
-Microsoft (R) Macro Assembler Version 14.23.28107.0	    04/30/20 10:48:06
-<assignment                                                   Symbols 2 - 1
+Microsoft (R) Macro Assembler Version 14.23.28107.0	    04/30/20 11:09:57
+<quiz 6                                                       Symbols 2 - 1
 
 
 
@@ -194,7 +192,7 @@ Segments and Groups:
 
 FLAT . . . . . . . . . . . . . .	GROUP
 STACK  . . . . . . . . . . . . .	32 Bit	 00001000 Para	  Stack	  'STACK'	 
-_DATA  . . . . . . . . . . . . .	32 Bit	 00000046 Para	  Public  'DATA'	
+_DATA  . . . . . . . . . . . . .	32 Bit	 0000003E Para	  Public  'DATA'	
 _TEXT  . . . . . . . . . . . . .	32 Bit	 0000007E Para	  Public  'CODE'	
 
 
@@ -544,8 +542,6 @@ ntPrime  . . . . . . . . . . . .	Byte	 0000002D _DATA
 output . . . . . . . . . . . . .	Byte	 00000014 _DATA	
 prompt . . . . . . . . . . . . .	Byte	 00000004 _DATA	
 red  . . . . . . . . . . . . . .	Number	 00000004h   
-tstNum1  . . . . . . . . . . . .	DWord	 0000003E _DATA	
-tstNum2  . . . . . . . . . . . .	DWord	 00000042 _DATA	
 white  . . . . . . . . . . . . .	Number	 0000000Fh   
 wsprintf . . . . . . . . . . . .	Text   	 wsprintfA
 yellow . . . . . . . . . . . . .	Number	 0000000Eh   
