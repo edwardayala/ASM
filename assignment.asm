@@ -17,9 +17,7 @@ prompt  BYTE    "Enter a number:",0
 output  BYTE    "The number ",0
 isPrime BYTE    " is prime.",0dh,0ah,0
 ntPrime BYTE    " is NOT prime.",0dh,0ah,0
-tstNum1 DWORD   2
-tstNum2 DWORD   3
-; TEST NUMBERS: 2, 3, 5, 7, 11, & 13
+
 .code
 main PROC
   mov   EDX, OFFSET prompt
