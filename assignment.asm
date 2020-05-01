@@ -28,8 +28,8 @@ main PROC
   mov   input, EAX
 
   ; CHECK IF PRIME
+  mov   EBX, 2
   .REPEAT
-    mov   EBX, 2
     mov   EDX, 0
     mov   EAX, input
     mov   ECX, EBX

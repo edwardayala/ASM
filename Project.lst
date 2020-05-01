@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler Version 14.23.28107.0	    04/30/20 11:09:57
+Microsoft (R) Macro Assembler Version 14.23.28107.0	    04/30/20 12:10:17
 <quiz 6                                                       Page 1 - 1
 
 
@@ -59,9 +59,9 @@ Microsoft (R) Macro Assembler Version 14.23.28107.0	    04/30/20 11:09:57
  0000000F  A3 00000000 R	  mov   input, EAX
 
 				  ; CHECK IF PRIME
+ 00000014  BB 00000002		  mov   EBX, 2
 				  .REPEAT
- 00000014		   *@C0001:
- 00000014  BB 00000002		    mov   EBX, 2
+ 00000019		   *@C0001:
  00000019  BA 00000000		    mov   EDX, 0
  0000001E  A1 00000000 R	    mov   EAX, input
  00000023  8B CB		    mov   ECX, EBX
@@ -72,7 +72,7 @@ Microsoft (R) Macro Assembler Version 14.23.28107.0	    04/30/20 11:09:57
  0000002D  7F 28		    jg    PRIME
 				  .UNTIL EBX == input-1
  0000002F  3B 1D FFFFFFFF R *	    cmp    ebx, input - 001h
- 00000035  75 DD	   *	    jne    @C0001
+ 00000035  75 E2	   *	    jne    @C0001
 
  00000037			  NOTPRIME:
  00000037  BA 00000014 R	  mov   EDX, OFFSET output
@@ -98,7 +98,7 @@ Microsoft (R) Macro Assembler Version 14.23.28107.0	    04/30/20 11:09:57
  00000079  E8 00000000 E   *	    call   ExitProcess
  0000007E			main ENDP
 				END main
-Microsoft (R) Macro Assembler Version 14.23.28107.0	    04/30/20 11:09:57
+Microsoft (R) Macro Assembler Version 14.23.28107.0	    04/30/20 12:10:17
 <quiz 6                                                       Symbols 2 - 1
 
 
