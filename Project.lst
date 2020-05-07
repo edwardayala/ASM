@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler Version 14.23.28107.0	    04/15/20 22:30:01
+Microsoft (R) Macro Assembler Version 14.23.28107.0	    05/07/20 10:24:25
 <assignment                                                   Page 1 - 1
 
 
@@ -28,17 +28,50 @@ Microsoft (R) Macro Assembler Version 14.23.28107.0	    04/15/20 22:30:01
 			      C 
 
  00000000			.data
-
+ 00000000 49 6E 70 75 74	mInput BYTE "Input a value for M:",0
+	   20 61 20 76 61
+	   6C 75 65 20 66
+	   6F 72 20 4D 3A
+	   00
+ 00000015 49 6E 70 75 74	nInput BYTE "Input a value for N:",0
+	   20 61 20 76 61
+	   6C 75 65 20 66
+	   6F 72 20 4E 3A
+	   00
  00000000			.code
  00000000			main PROC
+ 00000000  BA 00000000 R		mov EDX, OFFSET mInput
+ 00000005  E8 00000000 E		call WriteString
+ 0000000A  E8 00000000 E		call ReadInt
+ 0000000F  8B D8			mov EBX, EAX
 
- 00000000  E8 00000000 E	  call DumpRegs
-				  exit
- 00000005  6A 00	   *	    push   +000000000h
- 00000007  E8 00000000 E   *	    call   ExitProcess
- 0000000C			main ENDP
+ 00000011  BA 00000015 R		mov EDX, OFFSET nInput
+ 00000016  E8 00000000 E		call WriteString
+ 0000001B  E8 00000000 E		call ReadInt
+
+ 00000020  E8 00000007			call BetterRandomRange
+
+				    exit
+ 00000025  6A 00	   *	    push   +000000000h
+ 00000027  E8 00000000 E   *	    call   ExitProcess
+ 0000002C			main ENDP
+ 0000002C			BetterRandomRange PROC
+ 0000002C  B9 00000032		mov ECX, 50
+ 00000031			L1:
+ 00000031  E8 00000000 E		call RandomRange
+					.IF EAX < EBX
+ 00000036  3B C3	   *	    cmp    eax, ebx
+ 00000038  73 02	   *	    jae    @C0001
+ 0000003A  03 C3				add EAX, EBX
+					.ENDIF
+ 0000003C		   *@C0001:
+ 0000003C  E8 00000000 E		call WriteDec
+ 00000041  E8 00000000 E		call Crlf
+ 00000046  E2 E9			loop L1
+ 00000048  C3			ret
+ 00000049			BetterRandomRange ENDP
 				END main
-Microsoft (R) Macro Assembler Version 14.23.28107.0	    04/15/20 22:30:01
+Microsoft (R) Macro Assembler Version 14.23.28107.0	    05/07/20 10:24:25
 <assignment                                                   Symbols 2 - 1
 
 
@@ -132,14 +165,16 @@ Segments and Groups:
 
 FLAT . . . . . . . . . . . . . .	GROUP
 STACK  . . . . . . . . . . . . .	32 Bit	 00001000 Para	  Stack	  'STACK'	 
-_DATA  . . . . . . . . . . . . .	32 Bit	 00000000 Para	  Public  'DATA'	
-_TEXT  . . . . . . . . . . . . .	32 Bit	 0000000C Para	  Public  'CODE'	
+_DATA  . . . . . . . . . . . . .	32 Bit	 0000002A Para	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 00000049 Para	  Public  'CODE'	
 
 
 Procedures, parameters, and locals:
 
                 N a m e                 Type     Value    Attr
 
+BetterRandomRange  . . . . . . .	P Near	 0000002C _TEXT	Length= 0000001D Public STDCALL
+  L1 . . . . . . . . . . . . . .	L Near	 00000031 _TEXT	
 CloseFile  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 CloseHandle  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 Clrscr . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
@@ -240,7 +275,7 @@ WriteStackFrame  . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External
 WriteString  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteToFile  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteWindowsMsg  . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
-main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 0000000C Public STDCALL
+main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 0000002C Public STDCALL
 printf . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
 scanf  . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
 wsprintfA  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
@@ -472,7 +507,9 @@ lightGray  . . . . . . . . . . .	Number	 00000007h
 lightGreen . . . . . . . . . . .	Number	 0000000Ah   
 lightMagenta . . . . . . . . . .	Number	 0000000Dh   
 lightRed . . . . . . . . . . . .	Number	 0000000Ch   
+mInput . . . . . . . . . . . . .	Byte	 00000000 _DATA	
 magenta  . . . . . . . . . . . .	Number	 00000005h   
+nInput . . . . . . . . . . . . .	Byte	 00000015 _DATA	
 red  . . . . . . . . . . . . . .	Number	 00000004h   
 white  . . . . . . . . . . . . .	Number	 0000000Fh   
 wsprintf . . . . . . . . . . . .	Text   	 wsprintfA
